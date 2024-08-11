@@ -36,3 +36,6 @@ const thisMonth ='thisMonth';
 const later ='later';
 
 const Map<String,String> taskCategoryNames = {late:'late',today:'today', tomorrow:'tomorrow',thisWeek:'thisWeek',nextWeek :'nextWeek',thisMonth:'thisMonth',later:'later'};
+//Shared Preferences Keys
+const todo_tasks ="todo_tasks";
+const doneTasksKey ="done_tasks";

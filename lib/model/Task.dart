@@ -5,4 +5,21 @@ class Task {
   DateTime deadline ;
 
   Task(this.title,this.status,this.description ,this.deadline);
+  Task.fromJson(Map<String,dynamic>json):
+        title=json['title'],
+        status=json['status'],
+        description=json['description'],
+        deadline=DateTime.tryParse(json['deadline'])!;
+
+  Map<String,dynamic>toJson(){
+    return{
+    "title":title,
+    "status":status,
+    "description":description,
+    "deadline":deadline.toIso8601String(), // datetime en String
+    };
+
+}
+
+
 }
