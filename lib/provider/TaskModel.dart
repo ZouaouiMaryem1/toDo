@@ -7,43 +7,21 @@ import 'package:to_do/library/globals.dart' as globals;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskModel extends ChangeNotifier {
-
   final Map<String, List<Task>> _todoTasks = {
-    globals.late: [
-      Task("Task1", false, "create Provider",
-          DateTime.now().add(Duration(days: 1))),
-    ],
-    globals.today: [
-      Task("Today Task1", false, "create Provider",
-          DateTime.now().add(Duration(days: 1)))
-    ],
-    globals.tomorrow: [
-      Task("Tomorrow Task1", false, "create Provider",
-          DateTime.now().add(Duration(days: 1)))
-    ],
-    globals.thisWeek: [
-      Task("ThisWeek Task1 ", false, "create Provider",
-          DateTime.now().add(Duration(days: 1))),
-    ],
-    globals.nextWeek: [
-      Task("NextWeek Task1", false, "create Provider",
-          DateTime.now().add(Duration(days: 1))),
-    ],
-    globals.thisMonth: [
-      Task("ThisMonth Task1", false, "create Provider",
-          DateTime.now().add(Duration(days: 1))),
-    ],
-    globals.later: [
-      Task("Later Task1", false, "create Provider",
-          DateTime.now().add(Duration(days: 1))),
-    ],
+    globals.late: [],
+    globals.today: [],
+    globals.tomorrow: [],
+    globals.thisWeek: [],
+    globals.nextWeek: [],
+    globals.thisMonth: [],
+    globals.later: [],
   };
   Map<String, List<Task>> get todoTasks => _todoTasks;
   void add(Task _task) {
     String _key = guessTodokeyFromDate(_task.deadline);
     if (_todoTasks.containsKey(_key)) {
       _todoTasks[_key]!.add((_task));
-      syncCache();
+      addTaskToCache(_task);
       notifyListeners();
     }
   }
@@ -88,16 +66,25 @@ class TaskModel extends ChangeNotifier {
       return globals.later;
     }
   }
-  void syncCache() async{
+
+  void addTaskToCache(Task _task) async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString( globals.todo_tasks,jsonEncode(_todoTasks));
-    final String? content = prefs.getString('globals.todo_tasks');
-    print(content);
+    List<Task> _tasksList = [];
+    if (prefs.containsKey(globals.todo_tasks)) ;
+    {
+      final String? data = prefs.getString(globals.todo_tasks);
+      List<dynamic> _oldTasks = jsonDecode(data!);
+      _tasksList =
+          List<Task>.from(_oldTasks.map((element) => Task.fromJson(element)));
+      print(_oldTasks);
+    }
+    _tasksList.add(_task);
+
+    await prefs.setString(globals.todo_tasks, jsonEncode(_tasksList));
   }
 
   void syncDoneTaskToCache(Task _task) async {
-
     //Retrieve all todoTasks from cache
     // remove todoTask from prefs
     //update todoTask cache
@@ -105,6 +92,5 @@ class TaskModel extends ChangeNotifier {
     //Retrieve all doneTasks from cache
     // remove doneTask from prefs
     //update doneTask cache
-
   }
 }
