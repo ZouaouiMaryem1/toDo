@@ -35,7 +35,7 @@ class ListtasksByTabwidget extends StatelessWidget {
                       value: model.todoTasks[tabkey]![index].status,
                       onChanged: (bool? value) {
                         value:
-                        model.markAsDone(tabkey, index);
+                        model.markAsChecked(tabkey, index);
                         print(model.todoTasks[tabkey]![index].status);
                       },
                     ),

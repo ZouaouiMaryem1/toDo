@@ -58,7 +58,9 @@ class ListAllTasksWidget extends StatelessWidget {
                           leading: Checkbox(
                             value: model.todoTasks[key]![index].status,
                             onChanged: (bool? value) {
+                              model.markAsChecked(key, index);
                               model.markAsDone(key, index);
+
                               print(model.todoTasks[key]![index].status);
                             },
 

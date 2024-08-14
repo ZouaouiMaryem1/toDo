@@ -154,7 +154,7 @@ class _AddTasksViewState extends State<AddTasksView> {
               Task _newTask = Task(_titleController.text, false,
                   _descriptionController.text, _focusedDay);
               model.add(_newTask);
-
+              model.addTaskToCache(_newTask);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Task saved !')),
               );
